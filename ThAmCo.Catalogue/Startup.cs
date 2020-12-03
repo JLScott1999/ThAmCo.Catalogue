@@ -5,12 +5,14 @@ namespace ThAmCo.Catalogue
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using ThAmCo.Catalogue.Services.Product;
+    using ThAmCo.Catalogue.Services.StockManagement;
 
     public class Startup
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -18,6 +20,10 @@ namespace ThAmCo.Catalogue
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Setup Service Layer
+            services.AddTransient<IProductService, FakeProductService>();
+            services.AddTransient<IStockManagementService, FakeStockManagementService>();
+
             services.AddControllersWithViews();
         }
 
