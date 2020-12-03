@@ -3,7 +3,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using System.Diagnostics;
-    using ThAmCo.Catalogue.Models;
+    using ThAmCo.Catalogue.ViewModels;
 
     public class ErrorController : Controller
     {
