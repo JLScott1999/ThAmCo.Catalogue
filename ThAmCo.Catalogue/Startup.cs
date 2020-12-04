@@ -2,9 +2,11 @@ namespace ThAmCo.Catalogue
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using ThAmCo.Catalogue.Data;
     using ThAmCo.Catalogue.Services.Product;
     using ThAmCo.Catalogue.Services.StockManagement;
 
@@ -20,6 +22,11 @@ namespace ThAmCo.Catalogue
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Setup database connection
+            services.AddDbContext<DataContext>(options =>
+                options.UseSqlServer(this.Configuration.GetConnectionString("DBContext"))
+            );
+
             // Setup Service Layer
             services.AddTransient<IProductService, FakeProductService>();
             services.AddTransient<IStockManagementService, FakeStockManagementService>();
