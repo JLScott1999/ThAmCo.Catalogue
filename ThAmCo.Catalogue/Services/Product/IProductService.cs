@@ -13,5 +13,7 @@ namespace ThAmCo.Catalogue.Services.Product
 
         public IEnumerable<ProductModel> GetProducts();
 
+        public IEnumerable<ProductModel> SearchProducts(string query);
+
     }
 }

@@ -41,5 +41,6 @@ namespace ThAmCo.Catalogue.Services.Product
 
         public IEnumerable<ProductModel> GetProducts() => this.productData;
 
+        public IEnumerable<ProductModel> SearchProducts(string query) => this.productData.Where(p => p.Name.Contains(query) || p.Description.Contains(query));
     }
 }
