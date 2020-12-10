@@ -1,0 +1,1 @@
+dotnet build ThAmCo.Catalogue/ThAmCo.Catalogue.csproj
