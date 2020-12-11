@@ -12,7 +12,7 @@ before_script:
 install:
   - dotnet restore
 script:
-  - ./.scripts/dotnet-build.sh
-  - ./.scripts/dotnet-test.sh
+  - dotnet build
+  - dotnet test
 after_success:
   - ./.scripts/dotnet-publish.sh
