@@ -14,9 +14,9 @@ esac
 
 docker build -f ./ThAmCo.Catalogue/Dockerfile.$DOCKER_ENV -t thamco.catalogue:$DOCKER_TAG ./ThAmCo.Catalogue --no-cache
 
-docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-docker tag thamco.catalogue:$DOCKER_TAG $DOCKER_USERNAME/thamco.catalogue:$DOCKER_TAG
-docker push $DOCKER_USERNAME/thamco.catalogue:$DOCKER_TAG
+docker login docker.io -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+docker tag thamco.catalogue:$DOCKER_TAG docker.io/$DOCKER_USERNAME/thamco.catalogue:$DOCKER_TAG
+docker push docker.io/$DOCKER_USERNAME/thamco.catalogue:$DOCKER_TAG
 
 docker login https://docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_PASSWORD
 docker tag thamco.catalogue:$DOCKER_TAG docker.pkg.github.com/$GITHUB_USERNAME/thamco.catalogue/thamco.catalogue:$DOCKER_TAG
