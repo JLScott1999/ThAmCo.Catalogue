@@ -1,6 +1,8 @@
 ﻿namespace ThAmCo.Catalogue.Controllers
 {
+    using System;
     using System.Linq;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using ThAmCo.Catalogue.Services.Product;
     using ThAmCo.Catalogue.Services.StockManagement;
@@ -23,19 +25,26 @@
 
         public IActionResult Products()
         {
-            return this.View(this.productService.GetProducts()
-                .Join(this.stockService.GetProductsStock(),
-                    pm => pm.Id,
-                    psm => psm.Id,
-                    (pm, psm) => new ProductViewModel()
-                    {
-                        Id = pm.Id,
-                        Name = pm.Name,
-                        Description = pm.Description,
-                        Stock = psm.Stock
-                    }
-                )
-           );
+            try
+            {
+                return this.View(this.productService.GetProducts()
+                    .Join(this.stockService.GetProductsStock(),
+                        pm => pm.Id,
+                        psm => psm.Id,
+                        (pm, psm) => new ProductViewModel()
+                        {
+                            Id = pm.Id,
+                            Name = pm.Name,
+                            Description = pm.Description,
+                            Stock = psm.Stock
+                        }
+                    )
+                );
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
     }

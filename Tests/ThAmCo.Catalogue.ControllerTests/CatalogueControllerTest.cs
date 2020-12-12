@@ -17,7 +17,7 @@ namespace ThAmCo.Catalogue.ControllerTests
     {
 
         [Fact]
-        public void ProductsMethodReturnValue()
+        public void CatalogueController_Products_ReturnValue()
         {
             IProductService productService = new FakeProductService(new List<ProductModel>()
             {
@@ -56,7 +56,7 @@ namespace ThAmCo.Catalogue.ControllerTests
         }
 
         [Fact]
-        public void ProductsMethodProductsServiceException()
+        public void CatalogueController_Products_ProductsServiceException()
         {
             Mock<IProductService> productService = new Mock<IProductService>();
             productService.Setup(x => x.GetProducts()).Throws(new Exception());
@@ -76,12 +76,12 @@ namespace ThAmCo.Catalogue.ControllerTests
             CatalogueController controller = new CatalogueController(productService.Object, stockService);
             IActionResult result = controller.Products();
 
-            ViewResult viewResult = Assert.IsType<ViewResult>(result);
+            StatusCodeResult viewResult = Assert.IsType<StatusCodeResult>(result);
             Assert.Equal(500, viewResult.StatusCode);
         }
 
         [Fact]
-        public void ProductsMethodStockManagementServiceException()
+        public void CatalogueController_Products_StockManagementServiceException()
         {
             IProductService productService = new FakeProductService(new List<ProductModel>()
             {
@@ -103,7 +103,7 @@ namespace ThAmCo.Catalogue.ControllerTests
             CatalogueController controller = new CatalogueController(productService, stockService.Object);
             IActionResult result = controller.Products();
 
-            ViewResult viewResult = Assert.IsType<ViewResult>(result);
+            StatusCodeResult viewResult = Assert.IsType<StatusCodeResult>(result);
             Assert.Equal(500, viewResult.StatusCode);
         }
 
