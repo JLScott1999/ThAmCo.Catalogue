@@ -23,7 +23,8 @@ namespace ThAmCo.Catalogue.Services.Product
 
         public IEnumerable<ProductModel> SearchProducts(string query)
         {
-            return this.repository.Get().Where(p => p.Name.Contains(query) || p.Description.Contains(query));
+            query = query.ToLower();
+            return this.repository.Get().Where(p => p.Name.ToLower().Contains(query) || p.Description.ToLower().Contains(query));
         }
 
     }

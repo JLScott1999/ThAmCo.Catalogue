@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProductViewModel>
+@model IEnumerable<ProductViewModel>
 
 @{
     ViewData["Title"] = "Products";
@@ -18,6 +18,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.StockStatus)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -32,6 +33,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StockStatus)
+                </td>
+                <td>
+                    <a class="btn btn-block btn-primary" asp-controller="catalogue" asp-action="product" asp-route-id="@item.Id">Details</a>
                 </td>
             </tr>
         }

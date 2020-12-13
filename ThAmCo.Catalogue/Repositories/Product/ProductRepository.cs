@@ -19,18 +19,18 @@ namespace ThAmCo.Catalogue.Repositories.Product
         public IEnumerable<ProductModel> Get() =>
             this.context.ProductData
                 .Select(x =>
-                    this.DataToModel(x)
+                    DataToModel(x)
                 );
 
         public ProductModel Get(Guid id) =>
             this.context.ProductData
                 .Where(x => x.Id.Equals(id))
                 .Select(x =>
-                    this.DataToModel(x)
+                    DataToModel(x)
                 )
                 .FirstOrDefault();
 
-        private ProductModel DataToModel(ProductData product)
+        private static ProductModel DataToModel(ProductData product)
         {
             return new ProductModel()
             {
