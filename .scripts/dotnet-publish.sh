@@ -12,7 +12,7 @@ case "$TRAVIS_BRANCH" in
     ;;    
 esac
 
-docker build -f ./ThAmCo.Catalogue/Dockerfile.$DOCKER_ENV -t thamco.catalogue:$DOCKER_TAG ./ThAmCo.Catalogue --no-cache
+docker build -f ./ThAmCo.Catalogue/Dockerfile -t thamco.catalogue:$DOCKER_TAG ./ThAmCo.Catalogue --no-cache
 
 docker login docker.io -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 docker tag thamco.catalogue:$DOCKER_TAG docker.io/$DOCKER_USERNAME/thamco.catalogue:$DOCKER_TAG

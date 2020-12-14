@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:5.0.1-buster-slim AS base
 WORKDIR /app
-ENV ASPNETCORE_ENVIRONMENT=”Development”
+ENV ASPNETCORE_ENVIRONMENT=”Production”
 EXPOSE 80
 EXPOSE 443
 
