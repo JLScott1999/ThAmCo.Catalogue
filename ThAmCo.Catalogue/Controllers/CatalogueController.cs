@@ -78,9 +78,9 @@ namespace ThAmCo.Catalogue.Controllers
         }
 
         [Route("Search")]
-        public IActionResult Search(string q)
+        public IActionResult Search([FromQuery(Name = "q")] string query)
         {
-            return this.View("Products", this.productService.SearchProducts(q)
+            return this.View("Products", this.productService.SearchProducts(query)
                 .Join(this.stockService.GetProductsStock(),
                     pm => pm.Id,
                     psm => psm.Id,
