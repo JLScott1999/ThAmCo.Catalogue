@@ -14,6 +14,11 @@ namespace ThAmCo.Catalogue
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(configBuilder =>
+                {
+                    configBuilder.AddJsonFile("secrets/appsettings.secrets.json", optional: true);
+
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
