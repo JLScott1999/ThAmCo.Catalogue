@@ -25,16 +25,14 @@ namespace ThAmCo.Catalogue.Services.Review
                         ProductId = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
                         Date = DateTime.UtcNow,
                         Description = "Test Review of product",
-                        FirstName = "Test",
-                        LastName = "Test"
+                        Name = "Test"
                     },
                     new ProductReviewModel()
                     {
                         ProductId = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
                         Date = DateTime.UtcNow.AddDays(-7),
                         Description = "Test Review 2 of product",
-                        FirstName = "Test 2",
-                        LastName = "Test 2"
+                        Name = "Test 2"
                     }
                 }
             )
