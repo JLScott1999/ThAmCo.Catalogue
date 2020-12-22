@@ -2,26 +2,61 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+## String to partially override chart.fullname template (will maintain the release name)
+##
+nameOverride: ""
+
+## String to fully override chart.fullname template
+##
+fullnameOverride: ""
 
 image:
-  repository: nginx
-  pullPolicy: IfNotPresent
+  registry: docker.io
+  repository: jlscott1999/thamco.catalogue
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "dev"
+  # Specify a imagePullPolicy
+  # Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  # ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  #
+  pullPolicy: IfNotPresent
+  PullSecrets: []
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+container:
+  # Deployment Container Port
+  port: 80
+  # URLs to bind
+  bindURLs: http://+:80
+  # Command and args for running the container (set to default if not set). Use array form
+  command: []
+  args: []
+  # Additional environment variables to set
+  # E.g:
+  # extraEnvVars:
+  #   - name: FOO
+  #     value: BAR
+  environmentVariables: []
+  # ConfigMap with extra environment variables
+  #
+  # environmentVariablesCM:
+  # Secret with extra environment variables
+  #
+  # environmentVariablesSecret:
+
+## StrategyType, can be set to RollingUpdate or Recreate by default.
+##
+strategyType: RollingUpdate
+
+replicaCount: 1
 
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
-  annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
+  # Annotations to add to the service account
+  annotations: {}
 
 podAnnotations: {}
 
@@ -37,8 +72,32 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
+  # Service type.
+  #
+  type: LoadBalancer
+  # Service port.
+  #
   port: 80
+  # Specify the nodePort value for the LoadBalancer and NodePort service types.
+  # ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+  #
+  # nodePort:
+  # Service clusterIP.
+  #
+  # clusterIP: None
+  # Enable client source IP preservation
+  # ref http://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  #
+  externalTrafficPolicy: Cluster
+  # Set the LoadBalancer service type to internal only.
+  # ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+  #
+  # loadBalancerIP:
+  # Load Balancer sources.
+  # https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
+  ##
+  # loadBalancerSourceRanges:
+  # - 10.10.10.0/24
 
 ingress:
   enabled: false

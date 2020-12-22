@@ -11,6 +11,11 @@ spec:
   selector:
     matchLabels:
       {{- include "chart.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: {{ .Values.strategyType }}
+    {{- if (eq "Recreate" .Values.strategyType) }}
+    rollingUpdate: null
+    {{- end }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -29,22 +34,31 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
+          image: "{{- include "chart.image" . }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          workingDir: /app
+          env:
+            - name: ASPNETCORE_URLS
+              value: {{ .Values.container.bindURLs | quote }}
+            {{- range $key, $value := .Values.container.environmentVariables }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+            {{- end }}
+          envFrom:
+            {{- if .Values.container.environmentVariablesCM }}
+            - configMapRef:
+                name: {{ tpl .Values.environmentVariablesCM . | quote }}
+            {{- end }}
+            {{- if .Values.environmentVariablesSecret }}
+            - secretRef:
+                name: {{ tpl .Values.environmentVariablesSecret . | quote }}
+            {{- end }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: {{ .Values.container.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
