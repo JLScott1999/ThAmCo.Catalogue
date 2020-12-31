@@ -33,21 +33,38 @@ namespace ThAmCo.Catalogue.Controllers
         }
 
         [Route("Products")]
+        [Route("/")]
         public IActionResult Products()
         {
-            return this.View(this.productService.GetProducts()
+            IEnumerable<ProductModel> productsList = this.productService.GetProducts();
+            try
+            {
+
+                return this.View(productsList
                 .Join(this.stockService.GetProductsStock(),
                     pm => pm.Id,
                     psm => psm.Id,
                     (pm, psm) => new ProductViewModel()
+                        {
+                            Id = pm.Id,
+                            Name = pm.Name,
+                            Description = pm.Description,
+                            Stock = psm.Stock
+                        }
+                    )
+                );
+            }
+            catch (Exception)
+            {
+                return this.View(productsList
+                    .Select((pm, psm) => new ProductViewModel()
                     {
                         Id = pm.Id,
                         Name = pm.Name,
-                        Description = pm.Description,
-                        Stock = psm.Stock
-                    }
-                )
-           );
+                        Description = pm.Description
+                    })
+               );
+            }
         }
 
         [Route("Product/{id}")]
