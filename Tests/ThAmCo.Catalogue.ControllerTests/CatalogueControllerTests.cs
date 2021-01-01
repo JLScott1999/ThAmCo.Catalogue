@@ -87,9 +87,7 @@ namespace ThAmCo.Catalogue.ControllerTests
                 }
             });
             CatalogueController controller = new CatalogueController(productService.Object, stockService, null, null);
-            IActionResult result = controller.Products();
-
-            StatusCodeResult viewResult = Assert.IsType<StatusCodeResult>(result);
+            Exception viewResult = Assert.Throws<Exception>(() => controller.Products());
         }
 
         [Fact]
