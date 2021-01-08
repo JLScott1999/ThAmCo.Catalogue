@@ -9,9 +9,7 @@ namespace ThAmCo.Catalogue.Services.Review
     public interface IReviewService : IService
     {
 
-        public IEnumerable<ProductReviewModel> GetProductReviews(Guid id);
-
-        public IEnumerable<ProductReviewModel> GetProductReviews(ProductModel product);
+        public Task<IEnumerable<ProductReviewModel>> GetProductReviewsAsync(Guid id);
 
     }
 }
