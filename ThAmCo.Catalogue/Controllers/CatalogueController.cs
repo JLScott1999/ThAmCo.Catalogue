@@ -3,6 +3,7 @@ namespace ThAmCo.Catalogue.Controllers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using ThAmCo.Catalogue.Models;
     using ThAmCo.Catalogue.Services.Order;
@@ -39,7 +40,6 @@ namespace ThAmCo.Catalogue.Controllers
             IEnumerable<ProductModel> productsList = this.productService.GetProducts();
             try
             {
-
                 return this.View(productsList
                 .Join(this.stockService.GetProductsStock(),
                     pm => pm.Id,
@@ -61,30 +61,58 @@ namespace ThAmCo.Catalogue.Controllers
                     {
                         Id = pm.Id,
                         Name = pm.Name,
-                        Description = pm.Description
+                        Description = pm.Description,
+                        Stock = null
                     })
                );
             }
         }
 
         [Route("Product/{id}")]
-        public IActionResult Product(Guid id)
+        public async Task<IActionResult> Product(Guid id)
         {
             ProductModel product = this.productService.GetProduct(id);
+            IEnumerable<ProductReviewModel> productReviews = null;
+            ProductStockModel productStock = null;
+            IEnumerable<ProductOrderModel> orderModel = null;
             if (product != null)
             {
-                IEnumerable<ProductReviewModel> productReviews = this.reviewService.GetProductReviews(id);
-                ProductStockModel productStock = this.stockService.GetProductStock(id);
-                IEnumerable<ProductOrderModel> orderModel = this.orderService.HasOrdered(id);
+                try
+                {
+                    productReviews = await this.reviewService.GetProductReviewsAsync(id);
+                }
+                catch (Exception)
+                {
+                    // Review Service failure
+                }
+
+                try
+                {
+                    productStock = this.stockService.GetProductStock(id);
+                }
+                catch (Exception)
+                {
+                    // Stock Service failure
+                }
+
+                try
+                {
+                    orderModel = this.orderService.HasOrdered(id);
+                }
+                catch (Exception)
+                {
+                    // Order Service failure
+                }
+
                 return this.View(
                     new ProductViewModel()
                     {
                         Id = product.Id,
                         Name = product.Name,
                         Description = product.Description,
-                        Stock = productStock.Stock,
+                        Stock = productStock?.Stock,
                         Reviews = productReviews,
-                        LastOrdered = orderModel.FirstOrDefault()?.DateTime
+                        LastOrdered = orderModel?.FirstOrDefault()?.DateTime
                     }
                 );
             }
@@ -97,19 +125,35 @@ namespace ThAmCo.Catalogue.Controllers
         [Route("Search")]
         public IActionResult Search([FromQuery(Name = "q")] string query)
         {
-            return this.View("Products", this.productService.SearchProducts(query)
-                .Join(this.stockService.GetProductsStock(),
+            IEnumerable<ProductModel> productsList = this.productService.SearchProducts(query);
+            try
+            {
+                return this.View("Products", productsList
+                    .Join(this.stockService.GetProductsStock(),
                     pm => pm.Id,
                     psm => psm.Id,
                     (pm, psm) => new ProductViewModel()
+                        {
+                            Id = pm.Id,
+                            Name = pm.Name,
+                            Description = pm.Description,
+                            Stock = psm.Stock
+                        }
+                    )
+                );
+            }
+            catch (Exception)
+            {
+                return this.View("Products", productsList
+                    .Select((pm, psm) => new ProductViewModel()
                     {
                         Id = pm.Id,
                         Name = pm.Name,
                         Description = pm.Description,
-                        Stock = psm.Stock
-                    }
-                )
-           );
+                        Stock = null
+                    })
+               );
+            }
         }
 
     }
