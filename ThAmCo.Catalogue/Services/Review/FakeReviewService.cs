@@ -39,9 +39,7 @@ namespace ThAmCo.Catalogue.Services.Review
         {
         }
 
-        public IEnumerable<ProductReviewModel> GetProductReviews(Guid id) => this.productReviewData.Where(p => p.ProductId.Equals(id));
-
-        public IEnumerable<ProductReviewModel> GetProductReviews(ProductModel product) => this.productReviewData.Where(p => p.ProductId.Equals(product.Id));
+        public Task<IEnumerable<ProductReviewModel>> GetProductReviewsAsync(Guid id) => Task.FromResult(this.productReviewData.Where(p => p.ProductId.Equals(id)));
 
     }
 }
