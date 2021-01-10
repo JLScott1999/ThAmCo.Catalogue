@@ -10,7 +10,7 @@ namespace ThAmCo.Catalogue.Data
         {
         }
 
-        public DbSet<ProductData> ProductData { get; set; }
+        public virtual DbSet<ProductData> ProductData { get; set; }
 
     }
 }

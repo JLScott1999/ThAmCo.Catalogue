@@ -12,7 +12,7 @@ namespace ThAmCo.Catalogue.ServiceTests.Product
     {
 
         [Fact]
-        public void GetProductsTest()
+        public void GetProducts_ReturnValue()
         {
             IProductRepository productRepository = new FakeProductRepository(new List<ProductModel>()
             {
@@ -35,7 +35,7 @@ namespace ThAmCo.Catalogue.ServiceTests.Product
         }
 
         [Fact]
-        public void GetProductTest()
+        public void GetProduct_ReturnValue()
         {
             IProductRepository productRepository = new FakeProductRepository(new List<ProductModel>()
             {
@@ -60,7 +60,7 @@ namespace ThAmCo.Catalogue.ServiceTests.Product
         }
 
         [Fact]
-        public void SearchProductTest()
+        public void SearchProduct_ReturnValue()
         {
             IProductRepository productRepository = new FakeProductRepository(new List<ProductModel>()
             {

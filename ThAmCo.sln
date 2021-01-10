@@ -9,9 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4F94386D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThAmCo.Catalogue.ControllerTests", "Tests\ThAmCo.Catalogue.ControllerTests\ThAmCo.Catalogue.ControllerTests.csproj", "{E5E899CC-1C7E-430D-B2F2-527568F51A5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThAmCo.Catalogue.ServiceTests", "Tests\ThAmCo.Catalogue.ServiceTests\ThAmCo.Catalogue.ServiceTests.csproj", "{6E6E17C6-44FC-415E-ACDD-F2B9DE40A91C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThAmCo.Catalogue.ServiceTests", "Tests\ThAmCo.Catalogue.ServiceTests\ThAmCo.Catalogue.ServiceTests.csproj", "{6E6E17C6-44FC-415E-ACDD-F2B9DE40A91C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThAmCo.Catalogue.RepositoryTests", "Tests\ThAmCo.Catalogue.RepositoryTests\ThAmCo.Catalogue.RepositoryTests.csproj", "{1841F665-D259-419A-AD2B-E503C25D2D63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThAmCo.Catalogue.RepositoryTests", "Tests\ThAmCo.Catalogue.RepositoryTests\ThAmCo.Catalogue.RepositoryTests.csproj", "{1841F665-D259-419A-AD2B-E503C25D2D63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
