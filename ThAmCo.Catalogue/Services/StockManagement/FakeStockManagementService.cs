@@ -11,7 +11,7 @@ namespace ThAmCo.Catalogue.Services.StockManagement
 
         private readonly IEnumerable<ProductStockModel> productStockData;
 
-        public FakeStockManagementService(IEnumerable<ProductStockModel> productStockData)
+        public FakeStockManagementService(IList<ProductStockModel> productStockData)
         {
             this.productStockData = productStockData;
         }
