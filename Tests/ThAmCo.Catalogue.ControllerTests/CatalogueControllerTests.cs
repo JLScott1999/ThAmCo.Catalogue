@@ -27,13 +27,19 @@ namespace ThAmCo.Catalogue.ControllerTests
                 {
                     Id = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
                     Name = "Test",
-                    Description = "TestDesc"
+                    Description = "TestDesc",
+                    EAN = "TestEAN",
+                    BrandName = "TestBrand",
+                    Price = 10.99
                 },
                 new ProductModel()
                 {
                     Id = Guid.Parse("12E74E96-F987-4B1D-9870-74C84A0A8965"),
                     Name = "TestTwo",
-                    Description = "TestTwoDesc"
+                    Description = "TestTwoDesc",
+                    EAN = "TestTwoEAN",
+                    BrandName = "TestTwoBrand",
+                    Price = 5.45
                 }
             });
             IStockManagementService stockService = new FakeStockManagementService(new List<ProductStockModel>()
@@ -56,17 +62,25 @@ namespace ThAmCo.Catalogue.ControllerTests
             IEnumerable<ProductViewModel> model = Assert.IsAssignableFrom<IEnumerable<ProductViewModel>>(viewResult.ViewData.Model);
             Assert.Equal(2, model.Count());
 
-            Assert.Equal(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"), model.ElementAt(0).Id);
-            Assert.Equal("Test", model.ElementAt(0).Name);
-            Assert.Equal("TestDesc", model.ElementAt(0).Description);
-            Assert.Equal(10, model.ElementAt(0).Stock);
-            Assert.Equal("In Stock", model.ElementAt(0).StockStatus);
+            ProductViewModel firstValue = model.ElementAt(0);
+            Assert.Equal(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"), firstValue.Id);
+            Assert.Equal("Test", firstValue.Name);
+            Assert.Equal("TestDesc", firstValue.Description);
+            Assert.Equal(10, firstValue.Stock);
+            Assert.Equal("In Stock", firstValue.StockStatus);
+            Assert.Equal("TestEAN", firstValue.EAN);
+            Assert.Equal("TestBrand", firstValue.BrandName);
+            Assert.Equal(10.99, firstValue.Price);
 
-            Assert.Equal(Guid.Parse("12E74E96-F987-4B1D-9870-74C84A0A8965"), model.ElementAt(1).Id);
-            Assert.Equal("TestTwo", model.ElementAt(1).Name);
-            Assert.Equal("TestTwoDesc", model.ElementAt(1).Description);
-            Assert.Equal(0, model.ElementAt(1).Stock);
-            Assert.Equal("Out of Stock", model.ElementAt(1).StockStatus);
+            ProductViewModel secondValue = model.ElementAt(1);
+            Assert.Equal(Guid.Parse("12E74E96-F987-4B1D-9870-74C84A0A8965"), secondValue.Id);
+            Assert.Equal("TestTwo", secondValue.Name);
+            Assert.Equal("TestTwoDesc", secondValue.Description);
+            Assert.Equal(0, secondValue.Stock);
+            Assert.Equal("Out of Stock", secondValue.StockStatus);
+            Assert.Equal("TestTwoEAN", secondValue.EAN);
+            Assert.Equal("TestTwoBrand", secondValue.BrandName);
+            Assert.Equal(5.45, secondValue.Price);
         }
 
         [Fact]
@@ -100,13 +114,19 @@ namespace ThAmCo.Catalogue.ControllerTests
                 {
                     Id = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
                     Name = "Test",
-                    Description = "TestDesc"
+                    Description = "TestDesc",
+                    EAN = "TestEAN",
+                    BrandName = "TestBrand",
+                    Price = 10.99
                 },
                 new ProductModel()
                 {
                     Id = Guid.Parse("12E74E96-F987-4B1D-9870-74C84A0A8965"),
                     Name = "TestTwo",
-                    Description = "TestTwoDesc"
+                    Description = "TestTwoDesc",
+                    EAN = "TestTwoEAN",
+                    BrandName = "TestTwoBrand",
+                    Price = 5.45
                 }
             });
             Mock<IStockManagementService> stockService = new Mock<IStockManagementService>();
@@ -117,17 +137,25 @@ namespace ThAmCo.Catalogue.ControllerTests
             IEnumerable<ProductViewModel> model = Assert.IsAssignableFrom<IEnumerable<ProductViewModel>>(viewResult.ViewData.Model);
             Assert.Equal(2, model.Count());
 
-            Assert.Equal(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"), model.ElementAt(0).Id);
-            Assert.Equal("Test", model.ElementAt(0).Name);
-            Assert.Equal("TestDesc", model.ElementAt(0).Description);
-            Assert.Null(model.ElementAt(0).Stock);
-            Assert.Equal("Unknown", model.ElementAt(0).StockStatus);
+            ProductViewModel firstValue = model.ElementAt(0);
+            Assert.Equal(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"), firstValue.Id);
+            Assert.Equal("Test", firstValue.Name);
+            Assert.Equal("TestDesc", firstValue.Description);
+            Assert.Null(firstValue.Stock);
+            Assert.Equal("Unknown", firstValue.StockStatus);
+            Assert.Equal("TestEAN", firstValue.EAN);
+            Assert.Equal("TestBrand", firstValue.BrandName);
+            Assert.Equal(10.99, firstValue.Price);
 
-            Assert.Equal(Guid.Parse("12E74E96-F987-4B1D-9870-74C84A0A8965"), model.ElementAt(1).Id);
-            Assert.Equal("TestTwo", model.ElementAt(1).Name);
-            Assert.Equal("TestTwoDesc", model.ElementAt(1).Description);
-            Assert.Null(model.ElementAt(1).Stock);
-            Assert.Equal("Unknown", model.ElementAt(0).StockStatus);
+            ProductViewModel secondValue = model.ElementAt(1);
+            Assert.Equal(Guid.Parse("12E74E96-F987-4B1D-9870-74C84A0A8965"), secondValue.Id);
+            Assert.Equal("TestTwo", secondValue.Name);
+            Assert.Equal("TestTwoDesc", secondValue.Description);
+            Assert.Null(secondValue.Stock);
+            Assert.Equal("Unknown", secondValue.StockStatus);
+            Assert.Equal("TestTwoEAN", secondValue.EAN);
+            Assert.Equal("TestTwoBrand", secondValue.BrandName);
+            Assert.Equal(5.45, secondValue.Price);
         }
 
         [Fact]
@@ -139,7 +167,10 @@ namespace ThAmCo.Catalogue.ControllerTests
                 {
                     Id = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
                     Name = "Test",
-                    Description = "TestDesc"
+                    Description = "TestDesc",
+                    EAN = "TestEAN",
+                    BrandName = "TestBrand",
+                    Price = 10.99
                 }
             });
             IStockManagementService stockService = new FakeStockManagementService(new List<ProductStockModel>()
@@ -165,7 +196,7 @@ namespace ThAmCo.Catalogue.ControllerTests
                 new ProductOrderModel()
                 {
                     ProductId = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
-                    DateTime = DateTime.Parse("2020-12-12 12:12")
+                    OrderDate = DateTime.Parse("2020-12-12 12:12")
                 }
             });
             CatalogueController controller = new CatalogueController(productService, stockService, reviewService, orderService);
@@ -177,6 +208,9 @@ namespace ThAmCo.Catalogue.ControllerTests
             Assert.Equal("TestDesc", model.Description);
             Assert.Equal(10, model.Stock);
             Assert.Equal("In Stock", model.StockStatus);
+            Assert.Equal("TestEAN", model.EAN);
+            Assert.Equal("TestBrand", model.BrandName);
+            Assert.Equal(10.99, model.Price);
             Assert.Single(model.Reviews);
             Assert.Equal(DateTime.Parse("2020-12-12 12:12"), model.LastOrdered);
         }
@@ -190,7 +224,10 @@ namespace ThAmCo.Catalogue.ControllerTests
                 {
                     Id = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
                     Name = "Test",
-                    Description = "TestDesc"
+                    Description = "TestDesc",
+                    EAN = "TestEAN",
+                    BrandName = "TestBrand",
+                    Price = 10.99
                 }
             });
             IStockManagementService stockService = new FakeStockManagementService(new List<ProductStockModel>()
@@ -216,7 +253,7 @@ namespace ThAmCo.Catalogue.ControllerTests
                 new ProductOrderModel()
                 {
                     ProductId = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
-                    DateTime = DateTime.Parse("2020-12-12 12:12")
+                    OrderDate = DateTime.Parse("2020-12-12 12:12")
                 }
             });
             CatalogueController controller = new CatalogueController(productService, stockService, reviewService, orderService);
@@ -254,7 +291,7 @@ namespace ThAmCo.Catalogue.ControllerTests
                 new ProductOrderModel()
                 {
                     ProductId = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
-                    DateTime = DateTime.Parse("2020-12-12 12:12")
+                    OrderDate = DateTime.Parse("2020-12-12 12:12")
                 }
             });
             CatalogueController controller = new CatalogueController(productService.Object, stockService, reviewService, orderService);
@@ -270,7 +307,10 @@ namespace ThAmCo.Catalogue.ControllerTests
                 {
                     Id = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
                     Name = "Test",
-                    Description = "TestDesc"
+                    Description = "TestDesc",
+                    EAN = "TestEAN",
+                    BrandName = "TestBrand",
+                    Price = 10.99
                 }
             });
             Mock<IStockManagementService> stockService = new Mock<IStockManagementService>();
@@ -290,7 +330,7 @@ namespace ThAmCo.Catalogue.ControllerTests
                 new ProductOrderModel()
                 {
                     ProductId = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
-                    DateTime = DateTime.Parse("2020-12-12 12:12")
+                    OrderDate = DateTime.Parse("2020-12-12 12:12")
                 }
             });
             CatalogueController controller = new CatalogueController(productService, stockService.Object, reviewService, orderService);
@@ -302,6 +342,9 @@ namespace ThAmCo.Catalogue.ControllerTests
             Assert.Equal("TestDesc", model.Description);
             Assert.Null(model.Stock);
             Assert.Equal("Unknown", model.StockStatus);
+            Assert.Equal("TestEAN", model.EAN);
+            Assert.Equal("TestBrand", model.BrandName);
+            Assert.Equal(10.99, model.Price);
             Assert.Single(model.Reviews);
             Assert.Equal(DateTime.Parse("2020-12-12 12:12"), model.LastOrdered);
         }
@@ -315,7 +358,10 @@ namespace ThAmCo.Catalogue.ControllerTests
                 {
                     Id = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
                     Name = "Test",
-                    Description = "TestDesc"
+                    Description = "TestDesc",
+                    EAN = "TestEAN",
+                    BrandName = "TestBrand",
+                    Price = 10.99
                 }
             });
             IStockManagementService stockService = new FakeStockManagementService(new List<ProductStockModel>()
@@ -333,7 +379,7 @@ namespace ThAmCo.Catalogue.ControllerTests
                 new ProductOrderModel()
                 {
                     ProductId = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
-                    DateTime = DateTime.Parse("2020-12-12 12:12")
+                    OrderDate = DateTime.Parse("2020-12-12 12:12")
                 }
             });
             CatalogueController controller = new CatalogueController(productService, stockService, reviewService.Object, orderService);
@@ -345,6 +391,9 @@ namespace ThAmCo.Catalogue.ControllerTests
             Assert.Equal("TestDesc", model.Description);
             Assert.Equal(10, model.Stock);
             Assert.Equal("In Stock", model.StockStatus);
+            Assert.Equal("TestEAN", model.EAN);
+            Assert.Equal("TestBrand", model.BrandName);
+            Assert.Equal(10.99, model.Price);
             Assert.Null(model.Reviews);
             Assert.Equal(DateTime.Parse("2020-12-12 12:12"), model.LastOrdered);
         }
@@ -358,7 +407,10 @@ namespace ThAmCo.Catalogue.ControllerTests
                 {
                     Id = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
                     Name = "Test",
-                    Description = "TestDesc"
+                    Description = "TestDesc",
+                    EAN = "TestEAN",
+                    BrandName = "TestBrand",
+                    Price = 10.99
                 }
             });
             IStockManagementService stockService = new FakeStockManagementService(new List<ProductStockModel>()
@@ -380,7 +432,7 @@ namespace ThAmCo.Catalogue.ControllerTests
                 }
             });
             Mock<IOrderService> orderService = new Mock<IOrderService>();
-            orderService.Setup(x => x.HasOrdered(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"))).Throws(new Exception());
+            orderService.Setup(x => x.HasOrderedAsync(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"))).Throws(new Exception());
             CatalogueController controller = new CatalogueController(productService, stockService, reviewService, orderService.Object);
             IActionResult result = await controller.Product(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"));
 
@@ -390,6 +442,9 @@ namespace ThAmCo.Catalogue.ControllerTests
             Assert.Equal("TestDesc", model.Description);
             Assert.Equal(10, model.Stock);
             Assert.Equal("In Stock", model.StockStatus);
+            Assert.Equal("TestEAN", model.EAN);
+            Assert.Equal("TestBrand", model.BrandName);
+            Assert.Equal(10.99, model.Price);
             Assert.Single(model.Reviews);
             Assert.Null(model.LastOrdered);
         }

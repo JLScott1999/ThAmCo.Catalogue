@@ -4,59 +4,113 @@
     ViewData["Title"] = "Product";
 }
 
+@if (Model.LastOrdered.HasValue)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Previously Ordered</h4>
+        You previously ordered this item on the @Model.LastOrdered.Value.ToString("dd MMM yyyy")
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+
 <h1>Product</h1>
+<a asp-controller="Catalogue" asp-action="Products">Back to Products</a>
+<hr />
+<div class="row">
+    <div class="col-8">
 
-<div>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Stock)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StockStatus)
+            </dd>
+        </dl>
+    </div>
+
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                @if (Model.Stock.HasValue)
+                {
+                    if (Model.Stock.Value > 0)
+                    {
+                        <a href="" class="btn btn-block btn-primary">Buy</a>
+                    }
+                    else
+                    {
+                        <div class="btn btn-block btn-danger">@Model.StockStatus</div>
+                    }
+                }
+                else
+                {
+                    <div class="btn btn-block btn-warning">Please Retry Later</div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Reviews != null && Model.Reviews.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Review
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Reviews)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.LastOrdered.HasValue)
+{
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
-</div>
-
-<div>
-    <a asp-controller="Catalogue" asp-action="Products">Back to Products</a> |
-    <a asp-action="Edit" asp-route-id="@Model.Id">Buy</a>
-</div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Date
-            </th>
-            <th>
-                Review
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Reviews)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+    <form>
+        <h3>Leave a product review?</h3>
+        <div class="form-group">
+            <textarea class="form-control" id="reviewText" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+}

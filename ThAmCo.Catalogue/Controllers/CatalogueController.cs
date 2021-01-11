@@ -49,6 +49,9 @@ namespace ThAmCo.Catalogue.Controllers
                             Id = pm.Id,
                             Name = pm.Name,
                             Description = pm.Description,
+                            Price = pm.Price,
+                            EAN = pm.EAN,
+                            BrandName = pm.BrandName,
                             Stock = psm.Stock
                         }
                     )
@@ -62,6 +65,9 @@ namespace ThAmCo.Catalogue.Controllers
                         Id = pm.Id,
                         Name = pm.Name,
                         Description = pm.Description,
+                        Price = pm.Price,
+                        EAN = pm.EAN,
+                        BrandName = pm.BrandName,
                         Stock = null
                     })
                );
@@ -97,7 +103,7 @@ namespace ThAmCo.Catalogue.Controllers
 
                 try
                 {
-                    orderModel = this.orderService.HasOrdered(id);
+                    orderModel = await this.orderService.HasOrderedAsync(id);
                 }
                 catch (Exception)
                 {
@@ -110,9 +116,12 @@ namespace ThAmCo.Catalogue.Controllers
                         Id = product.Id,
                         Name = product.Name,
                         Description = product.Description,
+                        Price = product.Price,
+                        EAN = product.EAN,
+                        BrandName = product.BrandName,
                         Stock = productStock?.Stock,
                         Reviews = productReviews,
-                        LastOrdered = orderModel?.FirstOrDefault()?.DateTime
+                        LastOrdered = orderModel?.FirstOrDefault()?.OrderDate
                     }
                 );
             }
@@ -137,6 +146,9 @@ namespace ThAmCo.Catalogue.Controllers
                             Id = pm.Id,
                             Name = pm.Name,
                             Description = pm.Description,
+                            Price = pm.Price,
+                            EAN = pm.EAN,
+                            BrandName = pm.BrandName,
                             Stock = psm.Stock
                         }
                     )
@@ -150,6 +162,9 @@ namespace ThAmCo.Catalogue.Controllers
                         Id = pm.Id,
                         Name = pm.Name,
                         Description = pm.Description,
+                        Price = pm.Price,
+                        EAN = pm.EAN,
+                        BrandName = pm.BrandName,
                         Stock = null
                     })
                );

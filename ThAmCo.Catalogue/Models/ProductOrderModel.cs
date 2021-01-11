@@ -10,7 +10,7 @@ namespace ThAmCo.Catalogue.Models
 
         public Guid ProductId { get; set; }
 
-        public DateTime DateTime { get; set; }
+        public DateTime OrderDate { get; set; }
 
     }
 }

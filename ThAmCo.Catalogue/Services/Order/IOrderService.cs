@@ -9,9 +9,7 @@ namespace ThAmCo.Catalogue.Services.Order
     public interface IOrderService : IService
     {
 
-        public IEnumerable<ProductOrderModel> HasOrdered(ProductModel product);
-
-        public IEnumerable<ProductOrderModel> HasOrdered(Guid productId);
+        public Task<IEnumerable<ProductOrderModel>> HasOrderedAsync(Guid id);
 
     }
 }

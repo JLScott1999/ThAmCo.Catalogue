@@ -36,7 +36,10 @@ namespace ThAmCo.Catalogue.Repositories.Product
             {
                 Id = product.Id,
                 Name = product.Name,
-                Description = product.Description
+                Description = product.Description,
+                BrandName = product.BrandName,
+                EAN = product.EAN,
+                Price = product.Price
             };
         }
 

@@ -24,13 +24,19 @@ namespace ThAmCo.Catalogue.Services.Product
                     {
                         Id = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
                         Name = "Test",
-                        Description = "TestDesc"
+                        Description = "TestDesc",
+                        EAN = "TestEAN",
+                        BrandName = "TestBrand",
+                        Price = 10.99
                     },
                     new ProductModel()
                     {
                         Id = Guid.Parse("12E74E96-F987-4B1D-9870-74C84A0A8965"),
                         Name = "TestTwo",
-                        Description = "TestTwoDesc"
+                        Description = "TestTwoDesc",
+                        EAN = "TestTwoEAN",
+                        BrandName = "TestTwoBrand",
+                        Price = 5.45
                     }
                 }
             )

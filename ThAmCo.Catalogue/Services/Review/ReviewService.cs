@@ -23,7 +23,7 @@ namespace ThAmCo.Catalogue.Services.Review
         {
             try
             {
-                var response = this.httpClient.GetAsync("product/" + id.ToString()).Result;
+                HttpResponseMessage response = this.httpClient.GetAsync("product/" + id.ToString()).Result;
                 response.EnsureSuccessStatusCode();
 
                 if (response.Content is object && response.Content.Headers.ContentType.MediaType == "application/json")
@@ -41,7 +41,7 @@ namespace ThAmCo.Catalogue.Services.Review
             }
             catch (Exception)
             {
-                return new List<ProductReviewModel>();
+                // Unknown exception
             }
             return new List<ProductReviewModel>();
         }
