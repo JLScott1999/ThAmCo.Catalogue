@@ -9,11 +9,9 @@ namespace ThAmCo.Catalogue.Services.StockManagement
     public interface IStockManagementService : IService
     {
 
-        public IEnumerable<ProductStockModel> GetProductsStock();
+        public Task<IEnumerable<ProductStockModel>> GetProductsStockAsync();
 
-        public ProductStockModel GetProductStock(Guid id);
-
-        public ProductStockModel GetProductStock(ProductModel model);
+        public Task<ProductStockModel> GetProductStockAsync(Guid id);
 
     }
 }

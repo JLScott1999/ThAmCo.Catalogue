@@ -1,42 +1,37 @@
-namespace ThAmCo.Catalogue.ServiceTests.Review
+namespace ThAmCo.Catalogue.ServiceTests.StockManagement
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Text;
     using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
     using Moq;
     using Moq.Protected;
     using ThAmCo.Catalogue.Models;
-    using ThAmCo.Catalogue.Services.Review;
+    using ThAmCo.Catalogue.Services.StockManagement;
     using Xunit;
 
-
-    public class ReviewServiceTest
+    public class StockManagementServiceTest
     {
 
         [Fact]
-        public async Task GetProductReviews_ReturnValue()
+        public async Task GetProductsStock_ReturnValue()
         {
-            DateTime currentDateTime = DateTime.UtcNow;
-            List<ProductReviewModel> jsonObject = new List<ProductReviewModel>()
+            List<ProductStockModel> jsonObject = new List<ProductStockModel>()
             {
-                new ProductReviewModel()
+                new ProductStockModel()
                 {
-                    ProductId = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
-                    Date = currentDateTime,
-                    Description = "Test Review of product",
-                    Name = "Test"
+                    Id = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
+                    Stock = 10
                 },
-                new ProductReviewModel()
+                new ProductStockModel()
                 {
-                    ProductId = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
-                    Date = currentDateTime.AddDays(-7),
-                    Description = "Test Review 2 of product",
-                    Name = "Test 2"
+                    Id = Guid.Parse("12E74E96-F987-4B1D-9870-74C84A0A8965"),
+                    Stock = 0
                 }
             };
             Mock<HttpMessageHandler> handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
@@ -54,25 +49,21 @@ namespace ThAmCo.Catalogue.ServiceTests.Review
                        .Verifiable();
             HttpClient httpClient = new HttpClient(handlerMock.Object)
             {
-                BaseAddress = new Uri("http://thamcoreview.service/"),
+                BaseAddress = new Uri("http://thamcostock.service/"),
             };
-            ReviewService service = new ReviewService(httpClient);
+            StockManagementService service = new StockManagementService(httpClient);
 
-            IEnumerable<ProductReviewModel> result = await service.GetProductReviewsAsync(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"));
+            IEnumerable<ProductStockModel> result = await service.GetProductsStockAsync();
 
             Assert.Equal(2, result.Count());
-            ProductReviewModel firstValue = result.ElementAt(0);
-            Assert.Equal(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"), firstValue.ProductId);
-            Assert.Equal(currentDateTime, firstValue.Date);
-            Assert.Equal("Test Review of product", firstValue.Description);
-            Assert.Equal("Test", firstValue.Name);
-            ProductReviewModel secondValue = result.ElementAt(1);
-            Assert.Equal(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"), secondValue.ProductId);
-            Assert.Equal(currentDateTime.AddDays(-7), secondValue.Date);
-            Assert.Equal("Test Review 2 of product", secondValue.Description);
-            Assert.Equal("Test 2", secondValue.Name);
+            ProductStockModel firstValue = result.ElementAt(0);
+            Assert.Equal(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"), firstValue.Id);
+            Assert.Equal(10, firstValue.Stock);
+            ProductStockModel secondValue = result.ElementAt(1);
+            Assert.Equal(Guid.Parse("12E74E96-F987-4B1D-9870-74C84A0A8965"), secondValue.Id);
+            Assert.Equal(0, secondValue.Stock);
 
-            Uri expectedUri = new Uri("http://thamcoreview.service/product/14D486C4-CEE6-4C26-B274-CC0E300B0B99");
+            Uri expectedUri = new Uri("http://thamcostock.service/product/stock");
             handlerMock.Protected().Verify(
                "SendAsync",
                Times.AtMostOnce(),
@@ -86,7 +77,7 @@ namespace ThAmCo.Catalogue.ServiceTests.Review
         }
 
         [Fact]
-        public async Task GetProductReviews_NotFound()
+        public async Task GetProductsStock_NotFound()
         {
             Mock<HttpMessageHandler> handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock.Protected()
@@ -103,15 +94,15 @@ namespace ThAmCo.Catalogue.ServiceTests.Review
 
             HttpClient httpClient = new HttpClient(handlerMock.Object)
             {
-                BaseAddress = new Uri("http://thamcoreview.service/"),
+                BaseAddress = new Uri("http://thamcostock.service/"),
             };
+            StockManagementService service = new StockManagementService(httpClient);
 
-            ReviewService service = new ReviewService(httpClient);
-            IEnumerable<ProductReviewModel> result = await service.GetProductReviewsAsync(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"));
+            IEnumerable<ProductStockModel> result = await service.GetProductsStockAsync();
 
             Assert.Empty(result);
 
-            Uri expectedUri = new Uri("http://thamcoreview.service/product/14D486C4-CEE6-4C26-B274-CC0E300B0B99");
+            Uri expectedUri = new Uri("http://thamcostock.service/product/stock");
             handlerMock.Protected().Verify(
                "SendAsync",
                Times.AtMostOnce(),
@@ -125,19 +116,15 @@ namespace ThAmCo.Catalogue.ServiceTests.Review
         }
 
         [Fact]
-        public async Task GetProductReviews_Json_EmptyObject()
+        public async Task GetProductsStock_Json_EmptyObject()
         {
-            DateTime currentDateTime = DateTime.UtcNow;
-            List<object> jsonObject = new List<object>()
+            List<ProductStockModel> jsonObject = new List<ProductStockModel>()
             {
-                new ProductReviewModel() {
-                },
-                new ProductReviewModel()
+                new ProductStockModel(),
+                new ProductStockModel()
                 {
-                    ProductId = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
-                    Date = currentDateTime.AddDays(-7),
-                    Description = "Test Review 2 of product",
-                    Name = "Test 2"
+                    Id = Guid.Parse("12E74E96-F987-4B1D-9870-74C84A0A8965"),
+                    Stock = 0
                 }
             };
 
@@ -156,20 +143,18 @@ namespace ThAmCo.Catalogue.ServiceTests.Review
                        .Verifiable();
             HttpClient httpClient = new HttpClient(handlerMock.Object)
             {
-                BaseAddress = new Uri("http://thamcoreview.service/"),
+                BaseAddress = new Uri("http://thamcostock.service/")
             };
-            ReviewService service = new ReviewService(httpClient);
+            StockManagementService service = new StockManagementService(httpClient);
 
-            IEnumerable<ProductReviewModel> result = await service.GetProductReviewsAsync(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"));
+            IEnumerable<ProductStockModel> result = await service.GetProductsStockAsync();
 
             Assert.Single(result);
-            ProductReviewModel firstValue = result.ElementAt(0);
-            Assert.Equal(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"), firstValue.ProductId);
-            Assert.Equal(currentDateTime.AddDays(-7), firstValue.Date);
-            Assert.Equal("Test Review 2 of product", firstValue.Description);
-            Assert.Equal("Test 2", firstValue.Name);
+            ProductStockModel firstValue = result.ElementAt(0);
+            Assert.Equal(Guid.Parse("12E74E96-F987-4B1D-9870-74C84A0A8965"), firstValue.Id);
+            Assert.Equal(0, firstValue.Stock);
 
-            Uri expectedUri = new Uri("http://thamcoreview.service/product/14D486C4-CEE6-4C26-B274-CC0E300B0B99");
+            Uri expectedUri = new Uri("http://thamcostock.service/product/stock");
             handlerMock.Protected().Verify(
                "SendAsync",
                Times.AtMostOnce(),
@@ -183,22 +168,19 @@ namespace ThAmCo.Catalogue.ServiceTests.Review
         }
 
         [Fact]
-        public async Task GetProductReviews_Json_InvalidObject()
+        public async Task GetProductsStock_Json_InvalidObject()
         {
-            DateTime currentDateTime = DateTime.UtcNow;
             List<object> jsonObject = new List<object>()
             {
                 new {
-                    Id = 1,
+                    productId = 1,
                     D = 2020,
                     Name = "Test"
                 },
-                new ProductReviewModel()
+                new ProductStockModel()
                 {
-                    ProductId = Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"),
-                    Date = currentDateTime.AddDays(-7),
-                    Description = "Test Review 2 of product",
-                    Name = "Test 2"
+                    Id = Guid.Parse("12E74E96-F987-4B1D-9870-74C84A0A8965"),
+                    Stock = 0
                 }
             };
 
@@ -217,20 +199,18 @@ namespace ThAmCo.Catalogue.ServiceTests.Review
                        .Verifiable();
             HttpClient httpClient = new HttpClient(handlerMock.Object)
             {
-                BaseAddress = new Uri("http://thamcoreview.service/"),
+                BaseAddress = new Uri("http://thamcostock.service/")
             };
-            ReviewService service = new ReviewService(httpClient);
+            StockManagementService service = new StockManagementService(httpClient);
 
-            IEnumerable<ProductReviewModel> result = await service.GetProductReviewsAsync(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"));
+            IEnumerable<ProductStockModel> result = await service.GetProductsStockAsync();
 
             Assert.Single(result);
-            ProductReviewModel firstValue = result.ElementAt(0);
-            Assert.Equal(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"), firstValue.ProductId);
-            Assert.Equal(currentDateTime.AddDays(-7), firstValue.Date);
-            Assert.Equal("Test Review 2 of product", firstValue.Description);
-            Assert.Equal("Test 2", firstValue.Name);
+            ProductStockModel firstValue = result.ElementAt(0);
+            Assert.Equal(Guid.Parse("12E74E96-F987-4B1D-9870-74C84A0A8965"), firstValue.Id);
+            Assert.Equal(0, firstValue.Stock);
 
-            Uri expectedUri = new Uri("http://thamcoreview.service/product/14D486C4-CEE6-4C26-B274-CC0E300B0B99");
+            Uri expectedUri = new Uri("http://thamcostock.service/product/stock");
             handlerMock.Protected().Verify(
                "SendAsync",
                Times.AtMostOnce(),
@@ -244,10 +224,8 @@ namespace ThAmCo.Catalogue.ServiceTests.Review
         }
 
         [Fact]
-        public async Task GetProductReviews_Json_Invalid()
+        public async Task GetProductsStock_Json_Invalid()
         {
-            DateTime currentDateTime = DateTime.UtcNow;
-
             Mock<HttpMessageHandler> handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock.Protected()
                        .Setup<Task<HttpResponseMessage>>(
@@ -263,15 +241,15 @@ namespace ThAmCo.Catalogue.ServiceTests.Review
                        .Verifiable();
             HttpClient httpClient = new HttpClient(handlerMock.Object)
             {
-                BaseAddress = new Uri("http://thamcoreview.service/"),
+                BaseAddress = new Uri("http://thamcostock.service/"),
             };
-            ReviewService service = new ReviewService(httpClient);
+            StockManagementService service = new StockManagementService(httpClient);
 
-            IEnumerable<ProductReviewModel> result = await service.GetProductReviewsAsync(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"));
+            IEnumerable<ProductStockModel> result = await service.GetProductsStockAsync();
 
             Assert.Empty(result);
 
-            Uri expectedUri = new Uri("http://thamcoreview.service/product/14D486C4-CEE6-4C26-B274-CC0E300B0B99");
+            Uri expectedUri = new Uri("http://thamcostock.service/product/stock");
             handlerMock.Protected().Verify(
                "SendAsync",
                Times.AtMostOnce(),

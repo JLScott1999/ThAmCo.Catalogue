@@ -9,9 +9,9 @@ namespace ThAmCo.Catalogue.Services.StockManagement
     public class FakeStockManagementService : IStockManagementService
     {
 
-        private readonly IList<ProductStockModel> productStockData;
+        private readonly IEnumerable<ProductStockModel> productStockData;
 
-        public FakeStockManagementService(IList<ProductStockModel> productStockData)
+        public FakeStockManagementService(IEnumerable<ProductStockModel> productStockData)
         {
             this.productStockData = productStockData;
         }
@@ -35,11 +35,9 @@ namespace ThAmCo.Catalogue.Services.StockManagement
         {
         }
 
-        public IEnumerable<ProductStockModel> GetProductsStock() => this.productStockData;
+        public Task<IEnumerable<ProductStockModel>> GetProductsStockAsync() => Task.FromResult(this.productStockData);
 
-        public ProductStockModel GetProductStock(Guid id) => this.productStockData.FirstOrDefault(x => x.Id.Equals(id));
-
-        public ProductStockModel GetProductStock(ProductModel model) => this.productStockData.FirstOrDefault(x => x.Id.Equals(model.Id));
+        public Task<ProductStockModel> GetProductStockAsync(Guid id) => Task.FromResult(this.productStockData.FirstOrDefault(x => x.Id.Equals(id)));
 
     }
 }

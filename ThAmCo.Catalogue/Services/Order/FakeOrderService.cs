@@ -8,9 +8,9 @@ namespace ThAmCo.Catalogue.Services.Order
 
     public class FakeOrderService : IOrderService
     {
-        private readonly IList<ProductOrderModel> productOrderData;
+        private readonly IEnumerable<ProductOrderModel> productOrderData;
 
-        public FakeOrderService(IList<ProductOrderModel> productOrderData)
+        public FakeOrderService(IEnumerable<ProductOrderModel> productOrderData)
         {
             this.productOrderData = productOrderData;
         }

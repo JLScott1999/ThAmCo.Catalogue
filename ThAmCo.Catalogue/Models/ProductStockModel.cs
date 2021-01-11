@@ -9,5 +9,9 @@
 
         public int Stock { get; set; }
 
+        internal object Where(Func<object, bool> p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

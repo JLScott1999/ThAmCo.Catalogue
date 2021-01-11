@@ -148,7 +148,7 @@ namespace ThAmCo.Catalogue
             return HttpPolicyExtensions
                 .HandleTransientHttpError()
                 .Or<SocketException>()
-                .CircuitBreakerAsync(6, TimeSpan.FromSeconds(30),
+                .CircuitBreakerAsync(3, TimeSpan.FromSeconds(30),
                 onBreak: (exception, timeSpan) =>
                 {
                     Console.WriteLine("Breaking circuit for " + timeSpan.TotalSeconds + "seconds due to " + exception.Exception.Message);

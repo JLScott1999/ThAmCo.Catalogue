@@ -19,7 +19,7 @@ namespace ThAmCo.Catalogue.ControllerTests
     {
 
         [Fact]
-        public void Products_ReturnValue()
+        public async Task Products_ReturnValue()
         {
             IProductService productService = new FakeProductService(new List<ProductModel>()
             {
@@ -56,7 +56,7 @@ namespace ThAmCo.Catalogue.ControllerTests
                 }
             });
             CatalogueController controller = new CatalogueController(productService, stockService, null, null);
-            IActionResult result = controller.Products();
+            IActionResult result = await controller.Products();
 
             ViewResult viewResult = Assert.IsType<ViewResult>(result);
             IEnumerable<ProductViewModel> model = Assert.IsAssignableFrom<IEnumerable<ProductViewModel>>(viewResult.ViewData.Model);
@@ -84,7 +84,7 @@ namespace ThAmCo.Catalogue.ControllerTests
         }
 
         [Fact]
-        public void Products_ProductsService_Exception()
+        public async Task Products_ProductsService_Exception()
         {
             Mock<IProductService> productService = new Mock<IProductService>();
             productService.Setup(x => x.GetProducts()).Throws(new Exception());
@@ -102,11 +102,11 @@ namespace ThAmCo.Catalogue.ControllerTests
                 }
             });
             CatalogueController controller = new CatalogueController(productService.Object, stockService, null, null);
-            Exception viewResult = Assert.Throws<Exception>(() => controller.Products());
+            Exception viewResult = await Assert.ThrowsAsync<Exception>(async () => await controller.Products());
         }
 
         [Fact]
-        public void Products_StockManagementService_Exception()
+        public async Task Products_StockManagementService_Exception()
         {
             IProductService productService = new FakeProductService(new List<ProductModel>()
             {
@@ -130,9 +130,9 @@ namespace ThAmCo.Catalogue.ControllerTests
                 }
             });
             Mock<IStockManagementService> stockService = new Mock<IStockManagementService>();
-            stockService.Setup(x => x.GetProductsStock()).Throws(new Exception());
+            stockService.Setup(x => x.GetProductsStockAsync()).Throws(new Exception());
             CatalogueController controller = new CatalogueController(productService, stockService.Object, null, null);
-            IActionResult result = controller.Products();
+            IActionResult result = await controller.Products();
             ViewResult viewResult = Assert.IsType<ViewResult>(result);
             IEnumerable<ProductViewModel> model = Assert.IsAssignableFrom<IEnumerable<ProductViewModel>>(viewResult.ViewData.Model);
             Assert.Equal(2, model.Count());
@@ -314,7 +314,7 @@ namespace ThAmCo.Catalogue.ControllerTests
                 }
             });
             Mock<IStockManagementService> stockService = new Mock<IStockManagementService>();
-            stockService.Setup(x => x.GetProductStock(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"))).Throws(new Exception());
+            stockService.Setup(x => x.GetProductStockAsync(Guid.Parse("14D486C4-CEE6-4C26-B274-CC0E300B0B99"))).Throws(new Exception());
             IReviewService reviewService = new FakeReviewService(new List<ProductReviewModel>()
             {
                 new ProductReviewModel()

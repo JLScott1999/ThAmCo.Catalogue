@@ -35,13 +35,13 @@ namespace ThAmCo.Catalogue.Controllers
 
         [Route("Products")]
         [Route("/")]
-        public IActionResult Products()
+        public async Task<IActionResult> Products()
         {
             IEnumerable<ProductModel> productsList = this.productService.GetProducts();
             try
             {
                 return this.View(productsList
-                .Join(this.stockService.GetProductsStock(),
+                .Join(await this.stockService.GetProductsStockAsync(),
                     pm => pm.Id,
                     psm => psm.Id,
                     (pm, psm) => new ProductViewModel()
@@ -94,7 +94,7 @@ namespace ThAmCo.Catalogue.Controllers
 
                 try
                 {
-                    productStock = this.stockService.GetProductStock(id);
+                    productStock = await this.stockService.GetProductStockAsync(id);
                 }
                 catch (Exception)
                 {
@@ -132,13 +132,13 @@ namespace ThAmCo.Catalogue.Controllers
         }
 
         [Route("Search")]
-        public IActionResult Search([FromQuery(Name = "q")] string query)
+        public async Task<IActionResult> Search([FromQuery(Name = "q")] string query)
         {
             IEnumerable<ProductModel> productsList = this.productService.SearchProducts(query);
             try
             {
                 return this.View("Products", productsList
-                    .Join(this.stockService.GetProductsStock(),
+                    .Join(await this.stockService.GetProductsStockAsync(),
                     pm => pm.Id,
                     psm => psm.Id,
                     (pm, psm) => new ProductViewModel()
