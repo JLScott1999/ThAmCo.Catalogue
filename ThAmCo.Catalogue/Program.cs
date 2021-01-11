@@ -1,15 +1,30 @@
 namespace ThAmCo.Catalogue
 {
+    using System.Linq;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using ThAmCo.Catalogue.Data;
 
     public class Program
     {
 
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            IHost host = CreateHostBuilder(args).Build();
+            if (args.Contains("-m"))
+            {
+                using IServiceScope serviceScope = host.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+
+                DataContext context = serviceScope.ServiceProvider.GetService<DataContext>();
+                context.Database.Migrate();
+            }
+            else
+            {
+                host.Run();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
