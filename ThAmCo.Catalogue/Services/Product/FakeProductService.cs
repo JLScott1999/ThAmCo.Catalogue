@@ -9,9 +9,9 @@ namespace ThAmCo.Catalogue.Services.Product
     public class FakeProductService : IProductService
     {
 
-        private readonly IEnumerable<ProductModel> productData;
+        private readonly IList<ProductModel> productData;
 
-        public FakeProductService(IEnumerable<ProductModel> productData)
+        public FakeProductService(IList<ProductModel> productData)
         {
             this.productData = productData;
         }

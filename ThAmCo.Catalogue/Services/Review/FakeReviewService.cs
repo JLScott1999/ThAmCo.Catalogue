@@ -9,9 +9,9 @@ namespace ThAmCo.Catalogue.Services.Review
     public class FakeReviewService : IReviewService
     {
 
-        private readonly IEnumerable<ProductReviewModel> productReviewData;
+        private readonly IList<ProductReviewModel> productReviewData;
 
-        public FakeReviewService(IEnumerable<ProductReviewModel> productStockData)
+        public FakeReviewService(IList<ProductReviewModel> productStockData)
         {
             this.productReviewData = productStockData;
         }
