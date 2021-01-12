@@ -1,6 +1,7 @@
 namespace ThAmCo.Catalogue
 {
     using System;
+    using System.Diagnostics;
     using System.Net.Http;
     using System.Net.Sockets;
     using Microsoft.AspNetCore.Builder;
@@ -34,6 +35,7 @@ namespace ThAmCo.Catalogue
             string databaseConnectionURL = this.Configuration.GetConnectionString("DatabaseConnection");
             if (string.IsNullOrWhiteSpace(databaseConnectionURL))
             {
+                Debug.WriteLine("Using Fake ProductRepository");
                 services.AddTransient<IProductRepository, FakeProductRepository>();
             }
             else
@@ -50,6 +52,7 @@ namespace ThAmCo.Catalogue
             string stockManagementServiceURL = this.Configuration["Services:StockManagement:URL"];
             if (string.IsNullOrWhiteSpace(stockManagementServiceURL))
             {
+                Debug.WriteLine("Using Fake StockManagementService");
                 services.AddTransient<IStockManagementService, FakeStockManagementService>();
             }
             else
@@ -66,6 +69,7 @@ namespace ThAmCo.Catalogue
             string orderServiceURL = this.Configuration["Services:OrderService:URL"];
             if (string.IsNullOrWhiteSpace(orderServiceURL))
             {
+                Debug.WriteLine("Using Fake OrderService");
                 services.AddTransient<IOrderService, FakeOrderService>();
             }
             else
@@ -82,6 +86,7 @@ namespace ThAmCo.Catalogue
             string reviewServiceURL = this.Configuration["Services:ReviewService:URL"];
             if (string.IsNullOrWhiteSpace(reviewServiceURL))
             {
+                Debug.WriteLine("Using Fake ReviewService");
                 services.AddTransient<IReviewService, FakeReviewService>();
             }
             else

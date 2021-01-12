@@ -2,6 +2,7 @@ namespace ThAmCo.Catalogue.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
@@ -87,27 +88,30 @@ namespace ThAmCo.Catalogue.Controllers
                 {
                     productReviews = await this.reviewService.GetProductReviewsAsync(id);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     // Review Service failure
+                    Debug.WriteLine(e);
                 }
 
                 try
                 {
                     productStock = await this.stockService.GetProductStockAsync(id);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     // Stock Service failure
+                    Debug.WriteLine(e);
                 }
 
                 try
                 {
                     orderModel = await this.orderService.HasOrderedAsync(id);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     // Order Service failure
+                    Debug.WriteLine(e);
                 }
 
                 return this.View(
