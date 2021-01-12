@@ -1,0 +1,139 @@
+# Default values for chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## String to partially override chart.fullname template (will maintain the release name)
+##
+nameOverride: ""
+
+## String to fully override chart.fullname template
+##
+fullnameOverride: ""
+
+image:
+  registry: docker.io
+  repository: jlscott1999/thamco.catalogue
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+  # Specify a imagePullPolicy
+  # Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  # ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  #
+  pullPolicy: IfNotPresent
+  PullSecrets: []
+
+container:
+  # Deployment Container Port
+  port: 80
+  # URLs to bind
+  bindURLs: http://+:80
+  # Command and args for running the container (set to default if not set). Use array form
+  command: []
+  args: []
+  # Additional environment variables to set
+  # E.g:
+  # extraEnvVars:
+  #   - name: FOO
+  #     value: BAR
+  environmentVariables: []
+  # ConfigMap with extra environment variables
+  #
+  # environmentVariablesCM:
+  # Secret with extra environment variables
+  #
+  # environmentVariablesSecret:
+
+## StrategyType, can be set to RollingUpdate or Recreate by default.
+##
+strategyType: RollingUpdate
+
+replicaCount: 1
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # Annotations to add to the service account
+  annotations: {}
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  # Service type.
+  #
+  type: LoadBalancer
+  # Service port.
+  #
+  port: 8080
+  # Specify the nodePort value for the LoadBalancer and NodePort service types.
+  # ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+  #
+  # nodePort:
+  # Service clusterIP.
+  #
+  # clusterIP: None
+  # Enable client source IP preservation
+  # ref http://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  #
+  targetPort: 80
+  externalTrafficPolicy: Cluster
+  # Set the LoadBalancer service type to internal only.
+  # ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+  #
+  # loadBalancerIP:
+  # Load Balancer sources.
+  # https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
+  ##
+  # loadBalancerSourceRanges:
+  # - 10.10.10.0/24
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: thamco.service
+      paths: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
