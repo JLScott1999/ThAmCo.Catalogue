@@ -7,7 +7,7 @@ case "$TRAVIS_BRANCH" in
     ;;    
 esac
 
-DOCKER_TAG=$(grep -A3 'appVersion:' ./thamco.catalogue/chart/Chart.yaml | sed 's/^.*: //')
+DOCKER_TAG=$(grep -A3 'appVersion:' ./chart/Chart.yaml | sed 's/^.*: //')
 echo $DOCKER_TAG
 
 docker build -f ./ThAmCo.Catalogue/Dockerfile -t thamco.catalogue:$DOCKER_TAG ./ThAmCo.Catalogue --no-cache
