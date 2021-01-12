@@ -77,7 +77,7 @@ service:
   type: LoadBalancer
   # Service port.
   #
-  port: 80
+  port: 8080
   # Specify the nodePort value for the LoadBalancer and NodePort service types.
   # ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
   #
@@ -88,7 +88,7 @@ service:
   # Enable client source IP preservation
   # ref http://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
   #
-  targetPort: 8080
+  targetPort: 80
   externalTrafficPolicy: Cluster
   # Set the LoadBalancer service type to internal only.
   # ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
