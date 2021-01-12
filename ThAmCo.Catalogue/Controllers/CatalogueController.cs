@@ -42,7 +42,7 @@ namespace ThAmCo.Catalogue.Controllers
             try
             {
                 return this.View(productsList
-                .Join(await this.stockService.GetProductsStockAsync(),
+                .GroupJoin(await this.stockService.GetProductsStockAsync(),
                     pm => pm.Id,
                     psm => psm.Id,
                     (pm, psm) => new ProductViewModel()
@@ -53,7 +53,7 @@ namespace ThAmCo.Catalogue.Controllers
                             Price = pm.Price,
                             EAN = pm.EAN,
                             BrandName = pm.BrandName,
-                            Stock = psm.Stock
+                            Stock = psm?.FirstOrDefault()?.Stock
                         }
                     )
                 );
@@ -142,7 +142,7 @@ namespace ThAmCo.Catalogue.Controllers
             try
             {
                 return this.View("Products", productsList
-                    .Join(await this.stockService.GetProductsStockAsync(),
+                    .GroupJoin(await this.stockService.GetProductsStockAsync(),
                     pm => pm.Id,
                     psm => psm.Id,
                     (pm, psm) => new ProductViewModel()
@@ -153,7 +153,7 @@ namespace ThAmCo.Catalogue.Controllers
                             Price = pm.Price,
                             EAN = pm.EAN,
                             BrandName = pm.BrandName,
-                            Stock = psm.Stock
+                            Stock = psm?.FirstOrDefault()?.Stock
                         }
                     )
                 );
