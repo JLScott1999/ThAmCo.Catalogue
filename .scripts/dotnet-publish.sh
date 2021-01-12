@@ -1,16 +1,15 @@
-DOCKER_ENV=''
-DOCKER_TAG=''
-
 case "$TRAVIS_BRANCH" in
   "main")
-    DOCKER_ENV=Production
     DOCKER_TAG=latest
     ;;
   "develop")
-    DOCKER_ENV=Development
     DOCKER_TAG=dev
     ;;    
 esac
+
+DOCKER_TAG=$(grep -A3 'appVersion:' ./ThAmCo.Catalogue/chart/Chart.yaml | sed 's/^.*: //')
+
+echo DOCKER_TAG
 
 docker build -f ./ThAmCo.Catalogue/Dockerfile -t thamco.catalogue:$DOCKER_TAG ./ThAmCo.Catalogue --no-cache
 
